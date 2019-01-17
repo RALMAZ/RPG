@@ -1,13 +1,14 @@
 <template>
   <div>
     <div class="game"/>
+    <div class="ui"/>
   </div>
 </template>
 
 <script>
 import Phaser from 'phaser';
 import EasyStar from 'easystarjs';
-import gameUtility from '@mixins/gameUtility';
+import gameUtility from '@/mixins/gameUtility';
 
 export default {
   name: 'home',
@@ -46,7 +47,14 @@ export default {
     }
   },
   mounted() {
-    // Take device W and H
+    this.set.deviceW = window.innerWidth
+    || document.documentElement.clientWidth
+    || document.body.clientWidth;
+
+    this.set.deviceH = window.innerHeight
+    || document.documentElement.clientHeight
+    || document.body.clientHeight;
+
     this.initGame();
   },
   methods: {
@@ -70,16 +78,56 @@ export default {
     // Phaser core
     preloadPhaser() {
       this.game.load.crossOrigin = 'Anonymous';
-      this.game.load.bitmapFont('font', 'https://dl.dropboxusercontent.com/s/z4riz6hymsiimam/font.png?dl=0', 'https://dl.dropboxusercontent.com/s/7caqsovjw5xelp0/font.xml?dl=0');
-      this.game.load.image('greenTile', 'https://dl.dropboxusercontent.com/s/nxs4ptbuhrgzptx/green_tile.png?dl=0');
-      this.game.load.image('redTile', 'https://dl.dropboxusercontent.com/s/zhk68fq5z0c70db/red_tile.png?dl=0');
-      this.game.load.image('heroTile', 'https://dl.dropboxusercontent.com/s/8b5zkz9nhhx3a2i/hero_tile.png?dl=0');
-      this.game.load.image('heroShadow', 'https://dl.dropboxusercontent.com/s/sq6deec9ddm2635/ball_shadow.png?dl=0');
-      this.game.load.image('floor', 'https://dl.dropboxusercontent.com/s/h5n5usz8ejjlcxk/floor.png?dl=0');
-      this.game.load.image('wall', 'https://dl.dropboxusercontent.com/s/uhugfdq1xcwbm91/block.png?dl=0');
-      this.game.load.image('ball', 'https://dl.dropboxusercontent.com/s/pf574jtx7tlmkj6/ball.png?dl=0');
-      this.game.load.atlasJSONArray('hero', 'https://dl.dropboxusercontent.com/s/hradzhl7mok1q25/hero_8_4_41_62.png?dl=0', 'https://dl.dropboxusercontent.com/s/95vb0e8zscc4k54/hero_8_4_41_62.json?dl=0');
+
+      this.game.load.bitmapFont(
+        'font',
+        'https://dl.dropboxusercontent.com/s/z4riz6hymsiimam/font.png?dl=0',
+        'https://dl.dropboxusercontent.com/s/7caqsovjw5xelp0/font.xml?dl=0'
+      );
+
+      this.game.load.image(
+        'greenTile',
+        'https://dl.dropboxusercontent.com/s/nxs4ptbuhrgzptx/green_tile.png?dl=0'
+      );
+
+      this.game.load.image(
+        'redTile',
+        'https://dl.dropboxusercontent.com/s/zhk68fq5z0c70db/red_tile.png?dl=0'
+      );
+
+
+      this.game.load.image(
+        'heroTile',
+        'https://dl.dropboxusercontent.com/s/8b5zkz9nhhx3a2i/hero_tile.png?dl=0'
+      );
+
+      this.game.load.image(
+        'heroShadow',
+        'https://dl.dropboxusercontent.com/s/sq6deec9ddm2635/ball_shadow.png?dl=0'
+      );
+
+      this.game.load.image(
+        'floor',
+        'https://dl.dropboxusercontent.com/s/h5n5usz8ejjlcxk/floor.png?dl=0'
+      );
+
+      this.game.load.image(
+        'wall',
+        'https://dl.dropboxusercontent.com/s/uhugfdq1xcwbm91/block.png?dl=0'
+      );
+
+      this.game.load.image(
+        'ball',
+        'https://dl.dropboxusercontent.com/s/pf574jtx7tlmkj6/ball.png?dl=0'
+      );
+
+      this.game.load.atlasJSONArray(
+        'hero',
+        'https://dl.dropboxusercontent.com/s/hradzhl7mok1q25/hero_8_4_41_62.png?dl=0',
+        'https://dl.dropboxusercontent.com/s/95vb0e8zscc4k54/hero_8_4_41_62.json?dl=0'
+      );
     },
+
     createPhaser() {
       this.game.stage.backgroundColor = '#cccccc';
       // we draw the depth sorted scene into this render texture
@@ -96,10 +144,11 @@ export default {
       easystar.setGrid(this.levelData);
       easystar.setAcceptableTiles([0]);
       easystar.enableDiagonals();// we want path to have diagonals
-      easystar.disableCornerCutting();// no diagonal path when walking at wall corners
+      easystar.disableCornerCutting(); // no diagonal path when walking at wall corners
 
       this.game.input.activePointer.leftButton.onUp.add(this.findPath())
     },
+
     updatePhaser() {
       // follow the path
       this.aiWalk();
@@ -125,6 +174,7 @@ export default {
       // depthsort & draw new scene
       this.renderScene();
     }
+
   }
 }
 </script>

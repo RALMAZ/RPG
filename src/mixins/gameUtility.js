@@ -93,6 +93,30 @@ export default {
                 isoPt.y + borderOffset.y - this.heroData.heroHeight,
                 false
             ); // draw hero to render texture
+        },
+
+        drawTileIso(tileType, i, j) { // place isometric level tiles
+            var isoPt = new Phaser.Point(); // It is not advisable to create point in update loop
+            var cartPt = new Phaser.Point(); // This is here for better code readability.
+            cartPt.x = j * this.set.tileWidth;
+            cartPt.y = i * this.set.tileWidth;
+            isoPt = this.cartesianToIsometric(cartPt);
+            if (tileType == 1) {
+                this.gameData.gameScene.renderXY(
+                    this.gameData.wallSprite,
+                    isoPt.x + this.utilityData.borderOffset.x,
+                    // !!!!!!!!!! wallHeight !!!!!!!!!
+                    isoPt.y + this.utilityData.borderOffset.y - wallHeight,
+                    false
+                );
+            } else {
+                this.gameData.gameScene.renderXY(
+                    this.gameData.floorSprite,
+                    isoPt.x + this.utilityData.borderOffset.x,
+                    isoPt.y + this.utilityData.borderOffset.y,
+                    false
+                );
+            }
         }
     }
 }

@@ -153,7 +153,7 @@ export default {
       // follow the path
       this.aiWalk();
       // if no key is pressed then stop else play walking animation
-      if (dY == 0 && dX == 0) {
+      if (this.heroData.dY == 0 && this.heroData.dX == 0) {
           this.heroData.sorcerer.animations.stop();
           this.heroData.sorcerer.animations.currentAnim.frame = 0;
       } else {

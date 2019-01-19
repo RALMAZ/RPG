@@ -20,6 +20,8 @@ export default {
         deviceW: 0,
         deviceH: 0,
         tileWidth: 50,
+        easystar: {},
+        tapPos: {},
       },
       game: {},
       gameData: {
@@ -54,6 +56,8 @@ export default {
     this.set.deviceH = window.innerHeight
     || document.documentElement.clientHeight
     || document.body.clientHeight;
+
+    this.set.tapPos = new Phaser.Point(0, 0);
 
     this.initGame();
   },
@@ -140,11 +144,11 @@ export default {
       this.heroData.sorcererShadow.alpha = 0.4;
       this.createLevel();
 
-      let easystar = new EasyStar.js();
-      easystar.setGrid(this.levelData);
-      easystar.setAcceptableTiles([0]);
-      easystar.enableDiagonals();// we want path to have diagonals
-      easystar.disableCornerCutting(); // no diagonal path when walking at wall corners
+      this.set.easystar = new EasyStar.js();
+      this.set.easystar.setGrid(this.levelData);
+      this.set.easystar.setAcceptableTiles([0]);
+      this.set.easystar.enableDiagonals();// we want path to have diagonals
+      this.set.easystar.disableCornerCutting(); // no diagonal path when walking at wall corners
 
       this.game.input.activePointer.leftButton.onUp.add(this.findPath())
     },

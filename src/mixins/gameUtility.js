@@ -4,9 +4,18 @@ export default {
             utilityData: {
                 minimap: {},
                 shadowOffset: {},
-                borderOffset: {}
+                borderOffset: {},
+                wallHeight: 46,
+                wallGraphicHeight: 98,
+                floorGraphicHeight: 52,
+                // class?
+                isFindingPath: false,
+
             }
         }
+    },
+    mounted() {
+        this.utilityData.wallHeight = this.utilityData.wallGraphicHeight - this.utilityData.floorGraphicHeight;
     },
     methods: {
         createLevel() {
@@ -106,7 +115,7 @@ export default {
                     this.gameData.wallSprite,
                     isoPt.x + this.utilityData.borderOffset.x,
                     // !!!!!!!!!! wallHeight !!!!!!!!!
-                    isoPt.y + this.utilityData.borderOffset.y - wallHeight,
+                    isoPt.y + this.utilityData.borderOffset.y - this.utilityData.wallHeight,
                     false
                 );
             } else {
@@ -116,6 +125,44 @@ export default {
                     isoPt.y + this.utilityData.borderOffset.y,
                     false
                 );
+            }
+        },
+
+        findPath() {
+            if (this.utilityData.isFindingPath || this.heroData.isWalking) return;
+            var pos = this.game.input.activePointer.position;
+            var isoPt = new Phaser.Point(pos.x - this.utilityData.borderOffset.x, pos.y - this.utilityData.borderOffset.y);
+            this.set.tapPos = this.isometricToCartesian(isoPt);
+            this.set.tapPos.x -= this.set.tileWidth / 2;//adjustment to find the right tile for error due to rounding off
+            this.set.tapPos.y += this.set.tileWidth / 2;
+            this.set.tapPos = this.getTileCoordinates(this.set.tapPos, this.set.tileWidth);
+            if (this.set.tapPos.x > -1 && this.set.tapPos.y > -1 && this.set.tapPos.x < 7 && this.set.tapPos.y < 7) {//tapped within grid
+                if (this.levelData[this.set.tapPos.y][this.set.tapPos.x] != 1) {//not wall tile
+                    this.utilityData.isFindingPath = true;
+                    //let the algorithm do the magic
+                    this.set.easystar.findPath(this.heroData.heroMapTile.x, this.heroData.heroMapTile.y, this.set.tapPos.x, this.set.tapPos.y, this.plotAndMove());
+                    this.set.easystar.calculate();
+                }
+            }
+        },
+
+        plotAndMove(newPath) {
+            destination = this.heroData.heroMapTile;
+            path = newPath;
+            this.utilityData.isFindingPath = false;
+            this.repaintMinimap();
+            if (path === null) {
+                console.log("No Path was found.");
+            } else {
+                path.push(this.set.tapPos);
+                path.reverse();
+                path.pop();
+                for (var i = 0; i < path.length; i++) {
+                    var tmpSpr = minimap.getByName("tile" + path[i].y + "_" + path[i].x);
+                    tmpSpr.tint = 0x0000ff;
+                    //console.log("p "+path[i].x+":"+path[i].y);
+                }
+
             }
         }
     }

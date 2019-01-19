@@ -62,15 +62,13 @@ export default {
     }
   },
   mounted() {
-    this.set.deviceW = 800;
-    //window.innerWidth
-    //|| document.documentElement.clientWidth
-    //|| document.body.clientWidth;
+    this.set.deviceW = window.innerWidth
+    || document.documentElement.clientWidth
+    || document.body.clientWidth;
 
-    this.set.deviceH = 800;
-    //window.innerHeight
-    //|| document.documentElement.clientHeight
-    //|| document.body.clientHeight;
+    this.set.deviceH = window.innerHeight
+    || document.documentElement.clientHeight
+    || document.body.clientHeight;
 
     this.set.tapPos = new Phaser.Point(0, 0);
     this.utilityData.wallHeight = this.utilityData.wallGraphicHeight - this.utilityData.floorGraphicHeight;
@@ -191,7 +189,10 @@ export default {
       // get the new hero map tile
 
       this.heroData.heroMapTile = new Phaser.Point(1, 1);
-      this.heroData.heroMapTile = this.getTileCoordinates(this.heroData.heroMapPos, this.set.tileWidth);
+      this.heroData.heroMapTile = this.getTileCoordinates(
+        this.heroData.heroMapPos,
+        this.set.tileWidth
+      );
       // depthsort & draw new scene
       this.renderScene();
     },
@@ -209,10 +210,21 @@ export default {
             }
         }
         this.addHero();
-        this.heroData.heroMapSprite = minimap.create(this.heroData.heroMapTile.y * this.set.tileWidth, this.heroData.heroMapTile.x * this.set.tileWidth, 'heroTile');
+
+        this.heroData.heroMapSprite = minimap.create(
+          this.heroData.heroMapTile.y * this.set.tileWidth,
+          this.heroData.heroMapTile.x * this.set.tileWidth,
+          'heroTile'
+        );
+
         this.heroData.heroMapSprite.x += (this.set.tileWidth / 2) - (this.heroData.heroMapSprite.width / 2);
         this.heroData.heroMapSprite.y += (this.set.tileWidth / 2) - (this.heroData.heroMapSprite.height / 2);
-        this.heroData.heroMapPos = new Phaser.Point(this.heroData.heroMapSprite.x + this.heroData.heroMapSprite.width / 2, heroMapSprite.y + this.heroData.heroMapSprite.height / 2);
+
+        this.heroData.heroMapPos = new Phaser.Point(
+          this.heroData.heroMapSprite.x + this.heroData.heroMapSprite.width / 2,
+          heroMapSprite.y + this.heroData.heroMapSprite.height / 2
+        );
+
         this.heroData.heroMapTile = this.getTileCoordinates(this.heroData.heroMapPos, this.set.tileWidth);
         this.utilityData.minimap.scale = new Phaser.Point(0.3, 0.3);
         this.utilityData.minimap.x = 500;
@@ -224,14 +236,61 @@ export default {
         // sprite
         this.heroData.sorcerer = this.game.add.sprite(-50, 0, 'hero', '1.png');// keep him out side screen area
         // animation
-        this.heroData.sorcerer.animations.add('southeast', ['1.png', '2.png', '3.png', '4.png'], 6, true);
-        this.heroData.sorcerer.animations.add('south', ['5.png', '6.png', '7.png', '8.png'], 6, true);
-        this.heroData.sorcerer.animations.add('southwest', ['9.png', '10.png', '11.png', '12.png'], 6, true);
-        this.heroData.sorcerer.animations.add('west', ['13.png', '14.png', '15.png', '16.png'], 6, true);
-        this.heroData.sorcerer.animations.add('northwest', ['17.png', '18.png', '19.png', '20.png'], 6, true);
-        this.heroData.sorcerer.animations.add('north', ['21.png', '22.png', '23.png', '24.png'], 6, true);
-        this.heroData.sorcerer.animations.add('northeast', ['25.png', '26.png', '27.png', '28.png'], 6, true);
-        this.heroData.sorcerer.animations.add('east', ['29.png', '30.png', '31.png', '32.png'], 6, true);
+        this.heroData.sorcerer.animations.add(
+          'southeast', 
+          ['1.png', '2.png', '3.png', '4.png'], 
+          6, 
+          true
+        );
+
+        this.heroData.sorcerer.animations.add(
+          'south',
+          ['5.png', '6.png', '7.png', '8.png'], 
+          6, 
+          true
+        );
+
+        this.heroData.sorcerer.animations.add(
+          'southwest', 
+          ['9.png', '10.png', '11.png', '12.png'], 
+          6, 
+          true
+        );
+
+        this.heroData.sorcerer.animations.add(
+          'west', 
+          ['13.png', '14.png', '15.png', '16.png'], 
+          6, 
+          true
+        );
+
+        this.heroData.sorcerer.animations.add(
+          'northwest', 
+          ['17.png', '18.png', '19.png', '20.png'], 
+          6, 
+          true
+        );
+
+        this.heroData.sorcerer.animations.add(
+          'north', 
+          ['21.png', '22.png', '23.png', '24.png'], 
+          6, 
+          true
+        );
+
+        this.heroData.sorcerer.animations.add(
+          'northeast', 
+          ['25.png', '26.png', '27.png', '28.png'], 
+          6, 
+          true
+        );
+
+        this.heroData.sorcerer.animations.add(
+          'east', 
+          ['29.png', '30.png', '31.png', '32.png'], 
+          6, 
+          true
+        );
     },
 
     placeTile(tileType, i, j) {// place minimap
@@ -239,7 +298,11 @@ export default {
         if (tileType == 1) {
             tile = 'redTile';
         }
-        var tmpSpr = this.utilityData.minimap.create(j * this.set.tileWidth, i * this.set.tileWidth, tile);
+        var tmpSpr = this.utilityData.minimap.create(
+          j * this.set.tileWidth,
+          i * this.set.tileWidth,
+          tile
+        );
         tmpSpr.name = "tile" + i + "_" + j;
     },
 
@@ -250,7 +313,10 @@ export default {
             for (var j = 0; j < this.levelData[0].length; j++) {
                 tileType = this.levelData[i][j];
                 this.drawTileIso(tileType, i, j);
-                if (i == this.heroData.heroMapTile.y && j == this.heroData.heroMapTile.x) {
+                if (
+                  i == this.heroData.heroMapTile.y
+                  && j == this.heroData.heroMapTile.x
+                ) {
                     this.drawHeroIso();
                 }
             }
@@ -290,7 +356,6 @@ export default {
             this.gameData.gameScene.renderXY(
                 this.gameData.wallSprite,
                 isoPt.x + this.utilityData.borderOffset.x,
-                // !!!!!!!!!! wallHeight !!!!!!!!!
                 isoPt.y + this.utilityData.borderOffset.y - this.utilityData.wallHeight,
                 false
             );
@@ -305,18 +370,40 @@ export default {
     },
 
     findPath() {
-        if (this.utilityData.isFindingPath || this.heroData.isWalking) return;
+        if (
+          this.utilityData.isFindingPath
+          || this.heroData.isWalking
+        ) return;
         var pos = this.game.input.activePointer.position;
-        var isoPt = new Phaser.Point(pos.x - this.utilityData.borderOffset.x, pos.y - this.utilityData.borderOffset.y);
+        var isoPt = new Phaser.Point(
+          pos.x - this.utilityData.borderOffset.x,
+          pos.y - this.utilityData.borderOffset.y
+        );
+
         this.set.tapPos = this.isometricToCartesian(isoPt);
         this.set.tapPos.x -= this.set.tileWidth / 2;//adjustment to find the right tile for error due to rounding off
         this.set.tapPos.y += this.set.tileWidth / 2;
-        this.set.tapPos = this.getTileCoordinates(this.set.tapPos, this.set.tileWidth);
-        if (this.set.tapPos.x > -1 && this.set.tapPos.y > -1 && this.set.tapPos.x < 7 && this.set.tapPos.y < 7) {//tapped within grid
+        this.set.tapPos = this.getTileCoordinates(
+          this.set.tapPos,
+          this.set.tileWidth
+        );
+
+        if (
+          this.set.tapPos.x > -1
+          && this.set.tapPos.y > -1
+          && this.set.tapPos.x < 7
+          && this.set.tapPos.y < 7
+        ) { //tapped within grid
             if (this.levelData[this.set.tapPos.y][this.set.tapPos.x] != 1) {//not wall tile
                 this.utilityData.isFindingPath = true;
                 //let the algorithm do the magic
-                this.set.easystar.findPath(this.heroData.heroMapTile.x, this.heroData.heroMapTile.y, this.set.tapPos.x, this.set.tapPos.y, this.plotAndMove());
+                this.set.easystar.findPath(
+                  this.heroData.heroMapTile.x,
+                  this.heroData.heroMapTile.y,
+                  this.set.tapPos.x,
+                  this.set.tapPos.y,
+                  this.plotAndMove()
+                );
                 this.set.easystar.calculate();
             }
         }
@@ -334,7 +421,11 @@ export default {
             this.utilityData.path.reverse();
             this.utilityData.path.pop();
             for (var i = 0; i < this.utilityData.path.length; i++) {
-                var tmpSpr = this.utilityData.minimap.getByName("tile" + this.utilityData.path[i].y + "_" + this.utilityData.path[i].x);
+                var tmpSpr = this.utilityData.minimap.getByName(
+                    "tile" + this.utilityData.path[i].y
+                    + "_"
+                    + this.utilityData.path[i].x
+                );
                 tmpSpr.tint = 0x0000ff;
                 //console.log("p "+path[i].x+":"+path[i].y);
             }
@@ -352,29 +443,50 @@ export default {
 
     aiWalk() {
         if (this.utilityData.path.length == 0) {//path has ended
-            if (this.heroData.heroMapTile.x == this.utilityData.destination.x && this.heroData.heroMapTile.y == this.utilityData.destination.y) {
+            if (
+              this.heroData.heroMapTile.x == this.utilityData.destination.x
+              && this.heroData.heroMapTile.y == this.utilityData.destination.y
+            ) {
                 this.heroData.dX = 0;
                 this.heroData.dY = 0;
-                //console.log("ret "+destination.x+" ; "+destination.y+"-"+heroMapTile.x+" ; "+heroMapTile.y);
                 this.heroData.isWalking = false;
                 return;
             }
         }
         this.heroData.isWalking = true;
-        if (this.heroData.heroMapTile.x == this.utilityData.destination.x && this.heroData.heroMapTile.y == this.utilityData.destination.y) {//reached current destination, set new, change direction
-            //wait till we are few steps into the tile before we turn
+        if (
+          this.heroData.heroMapTile.x == this.utilityData.destination.x
+          && this.heroData.heroMapTile.y == this.utilityData.destination.y
+        ) { // reached current destination, set new, change direction
+            // wait till we are few steps into the tile before we turn
             this.utilityData.stepsTaken++;
             if (this.utilityData.stepsTaken < this.utilityData.stepsTillTurn) {
                 return;
             }
             console.log("at " + heroMapTile.x + " ; " + heroMapTile.y);
             //centralise the hero on the tile    
-            this.heroData.heroMapSprite.x = (this.heroData.heroMapTile.x * this.set.tileWidth) + (this.set.tileWidth / 2) - (this.heroData.heroMapSprite.width / 2);
-            this.heroData.heroMapSprite.y = (this.heroData.heroMapTile.y * this.set.tileWidth) + (this.set.tileWidth / 2) - (this.heroData.heroMapSprite.height / 2);
-            this.heroData.heroMapPos.x = this.heroData.heroMapSprite.x + this.heroData.heroMapSprite.width / 2;
-            this.heroData.heroMapPos.y = this.heroData.heroMapSprite.y + this.heroData.heroMapSprite.height / 2;
+            this.heroData.heroMapSprite.x = 
+              (this.heroData.heroMapTile.x * this.set.tileWidth)
+              + (this.set.tileWidth / 2)
+              - (this.heroData.heroMapSprite.width / 2);
+
+            this.heroData.heroMapSprite.y =
+              (this.heroData.heroMapTile.y
+              * this.set.tileWidth)
+              + (this.set.tileWidth / 2)
+              - (this.heroData.heroMapSprite.height / 2);
+            
+            this.heroData.heroMapPos.x =
+              this.heroData.heroMapSprite.x
+              + this.heroData.heroMapSprite.width / 2;
+
+            this.heroData.heroMapPos.y =
+              this.heroData.heroMapSprite.y
+              + this.heroData.heroMapSprite.height / 2;
+
             this.utilityData.stepsTaken = 0;
             this.utilityData.destination = this.utilityData.path.pop();//whats next tile in path
+            
             if (this.heroData.heroMapTile.x < this.utilityData.destination.x) {
                 this.heroData.dX = 1;
             } else if (this.heroData.heroMapTile.x > this.utilityData.destination.x) {
@@ -437,7 +549,6 @@ export default {
                 }
             }
         }
-        //console.log(facing);
     },
 
     // Utility

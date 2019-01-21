@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+// Set vuex-persis
 export default new Vuex.Store({
   state: {
     levels: {

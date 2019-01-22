@@ -34,33 +34,56 @@ export default class IsoInteraction extends Scene {
 
     spawnTiles() {
         var tile;
-        var array = [];
+
+
+        var tileUser = this.add.isoSprite(76, 76, 50, 'cube', this.isoGroup);
+        
 
         for (var xx = 0; xx < 512; xx += 38) {
-            array[xx] = [];
             for (var yy = 0; yy < 512; yy += 38) {
                 if (yy == 0 || xx == 0 || yy == 494 || xx == 494) {
                     tile = this.add.isoSprite(xx, yy, 15, 'cube', this.isoGroup);
-                    array[xx][yy] = 1;
                 } else {
-                    array[xx][yy] = 0;
                     tile = this.add.isoSprite(xx, yy, 31, 'tile', this.isoGroup);
                     tile.setInteractive();
 
-                    tile.on('pointerover', function () {
-                        this.setTint(0x86bfda);
-                        this.isoZ += 3;
+                    tile.on('pointerover', () => {
+                        tile.setTint(0x86bfda);
+                        tile.isoZ += 3;
                     });
 
-                    tile.on('pointerout', function () {
-                        this.clearTint();
-                        this.isoZ -= 3;
+                    tile.on('pointerout', () => {
+                        tile.clearTint();
+                        tile.isoZ -= 3;
                     });
                 }
             }
         }
+        //
+    }
 
-        console.log(array);
-        
+    spawnUser() {
+        // Arrow move
+        /*
+        var moveRect = (e) => {
+            if (e.code == 'ArrowDown') {
+                tile.isoX += 38;
+                tile.isoY += 38;
+            }
+            if (e.code == 'ArrowUp') {
+                tile.isoX -= 38;
+                tile.isoY -= 38;
+            }
+            if (e.code == 'ArrowLeft') {
+                tile.isoX -= 38;
+                tile.isoY += 38;
+            }
+            if (e.code == 'ArrowRight') {
+                tile.isoX += 38;
+                tile.isoY -= 38;
+            }
+        }
+        addEventListener("keydown", moveRect);
+        */
     }
 }

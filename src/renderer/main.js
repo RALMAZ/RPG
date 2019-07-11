@@ -2,7 +2,6 @@ import Vue from 'vue'
 import axios from 'axios'
 
 import App from './App'
-import router from './router'
 import store from './store'
 import game from './game'
 
@@ -13,7 +12,6 @@ Vue.config.productionTip = false
 
 new Vue({
   components: { App },
-  router,
   store,
   template: '<App/>'
 }).$mount('#app')

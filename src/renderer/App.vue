@@ -9,15 +9,17 @@
         v-text="'Menu'"
         class="menu"
       />
-
-      <Menu v-if="menuShow"/>
+      <Menu
+        v-if="menuShow"
+        @menuClose="menuShow = false"
+      />
     </div>
   </div>
 </template>
 
 <script>
   import * as ex from 'excalibur'
-  import Menu from './components/menu/Menu.vue'
+  import Menu from './components/Menu.vue'
 
   export default {
     components: {
@@ -32,7 +34,7 @@
 
     mounted() {
       let actor = new ex.Actor({
-        pos: new ex.Vector(100, 100),
+        pos: new ex.Vector(500, 100),
         color: ex.Color.Red,
         body: new ex.Body({
           vel: new ex.Vector(20, 30), // velocity
@@ -53,6 +55,6 @@
 <style scoped>
 .home {
   position: absolute;
-  color:white;
+  color:black;
 }
 </style>

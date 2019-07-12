@@ -2,7 +2,7 @@ import * as ex from 'excalibur'
 
 var game = new ex.Engine({
     displayMode: ex.DisplayMode.FullScreen,
-    backgroundColor: ex.Color.fromHex('#000000')
+    backgroundColor: ex.Color.fromHex('#FFFFFF')
 });
 
 // create an asset loader

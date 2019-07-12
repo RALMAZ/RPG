@@ -1,18 +1,32 @@
 <template>
   <div id="app">
     <div class="home">
-      v 0.1.0 ORO
+      <div
+        v-text="'v 0.1.0 ORO'"
+      />
+      <div
+        @click="menuShow = !menuShow"
+        v-text="'Menu'"
+        class="menu"
+      />
+
+      <Menu v-if="menuShow"/>
     </div>
   </div>
 </template>
 
 <script>
   import * as ex from 'excalibur'
+  import Menu from './components/menu/Menu.vue'
 
   export default {
+    components: {
+      Menu
+    },
+
     data() {
       return {
-        test: 0
+        menuShow: false
       }
     },
 
@@ -36,7 +50,7 @@
   }
 </script>
 
-<style>
+<style scoped>
 .home {
   position: absolute;
   color:white;
